@@ -33,13 +33,87 @@
                 8: '',
                 9: '',
             },
-            current: 'X'
+            current: 'X',
+            type:'H',
+            computer: 'X',
+            order:''
         }),
         methods:{
             play(key){
-                if(! this.values[key]) {
+                if( this.values[key]==='') {
                     this.values[key] = this.current
                     this.current  = (this.current === 'X' ? 'O' : 'X')
+                    this.order = this.order + key
+                }
+            },
+            isWin(){
+                var ans=0
+                if(((this.values[1]=== this.values[2])&&(this.values[1]=== this.values[3])&&(this.values[1]!=''))||
+                ((this.values[4]=== this.values[5])&&(this.values[4]=== this.values[6])&&(this.values[4]!=''))||
+                ((this.values[7]=== this.values[8])&&(this.values[7]=== this.values[9])&&(this.values[7]!=''))||
+                ((this.values[1]=== this.values[4])&&(this.values[1]=== this.values[7])&&(this.values[1]!=''))||
+                ((this.values[2]=== this.values[5])&&(this.values[2]=== this.values[8])&&(this.values[2]!=''))||
+                ((this.values[3]=== this.values[6])&&(this.values[3]=== this.values[9])&&(this.values[3]!=''))||
+                ((this.values[1]=== this.values[5])&&(this.values[1]=== this.values[9])&&(this.values[1]!=''))||
+                ((this.values[3]=== this.values[5])&&(this.values[3]=== this.values[7])&&(this.values[3]!=''))){
+                    ans=1
+                }
+                return ans
+            },
+            isEmpty(){
+                var ans=0
+                for (var i=1; i<10; i++) { 
+                    if (val===''){
+                        ans=1
+                    }
+                }
+                return ans
+            },
+            newGame(){
+                var ans=0
+                for (var i=1; i<10; i++) { 
+                    this.values[i]=''
+                }
+                this.order=''
+                return ans
+            },
+            autoPlay(){
+                var ans=0
+                while (ans=0){
+                    var i=Math.floor(Math.random() * 10)
+                    if  (this.values[i]===''){
+                        this.values[i]=this.current
+                        ans=1
+                    }
+                }
+            },
+            match(){
+                ans=""
+                while ((isEmpty()===0)&&(isWin()===0)){
+                    if (this.type==='C' && this.current===this.computer){
+                        autoPlay()
+                    } else {
+                        play()
+                    }
+                }
+                if (isWin()===1){
+                    ans = "The WINNER is "+ (this.current === 'X' ? 'O' : 'X')
+                } else {
+                    ans = "Without winner"
+                }
+                return ans
+            },
+            undoPlay(){
+                ans=0
+                if (this.order.length>0){
+                    var val=parseInt(this.order.slice(-1))
+                    this.values[val]=''
+                    this.order= this.order.slice(1,-1)
+                    this.current  = (this.current === 'X' ? 'O' : 'X')
+                }
+            },
+            changeType(){
+                this.type  = (this.type === 'H' ? 'C' : 'H')
                 }
             }
         }
